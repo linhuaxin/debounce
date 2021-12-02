@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+  <input type="text" id="name" >
+
+  <script src="index.js"></script>
+
+  <script>
+    let input = document.getElementById('name');
+    let handler = function (event) {
+      console.log(this.value, event);
+    };
+    let debounceHandler = debounce(handler, 2000);
+    input.addEventListener('input', debounceHandler);
+  </script>
+</body>
+</html>
