@@ -14,7 +14,7 @@
     let handler = function (event) {
       console.log(this.value, event);
     };
-    let debounceHandler = debounce(handler, 2000);
+    let debounceHandler = debounce(handler, 2000, { runFirst: true });
     input.addEventListener('input', debounceHandler);
   </script>
 </body>
