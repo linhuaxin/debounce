@@ -6,16 +6,27 @@
 </head>
 <body>
   <input type="text" id="name" >
+  <button id="cancelBtn">取消</button>
 
   <script src="index.js"></script>
 
   <script>
     let input = document.getElementById('name');
     let handler = function (event) {
-      console.log(this.value, event);
+      return 666666;
     };
-    let debounceHandler = debounce(handler, 2000, { runFirst: true });
-    input.addEventListener('input', debounceHandler);
+
+    let debounceHandler = debounce(handler, 1000, { immediate: false });
+    input.addEventListener('input', () => {
+      debounceHandler().then(res => {
+        console.log("result: ", res);
+      });
+    });
+
+    let cancelBtn = document.getElementById('cancelBtn');
+    cancelBtn.addEventListener('click', () => {
+      debounceHandler.cancel();
+    });
   </script>
 </body>
 </html>

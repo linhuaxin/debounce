@@ -1,24 +1,38 @@
 function debounce(fn, delay, config = {
-  runFirst: false
+  immediate: false
 }) {
   let timer = null;
   let isInvolved = false;
-  let { runFirst } = config;
 
-  return function (...args) {
-    if (runFirst && !isInvolved) {
-      fn.apply(this, args);
-      isInvolved = true;
-      return;
-    }
+  function _debounce (...args) {
+    return new Promise(resolve => {
+      if (timer) {
+        clearTimeout(timer);
+      }
 
+      if (config.immediate && !isInvolved) {
+        let result = fn.apply(this, args);
+        resolve(result);
+        isInvolved = true;
+        return;
+      }
+
+      timer = setTimeout(() => {
+        let result = fn.apply(this, args);
+        resolve(result);
+        timer = null;
+        isInvolved = false;
+      }, delay);
+    });
+  }
+
+  _debounce.cancel = function() {
     if (timer) {
       clearTimeout(timer);
-    }
-
-    timer = setTimeout(() => {
-      fn.apply(this, args);
+      timer = null;
       isInvolved = false;
-    }, delay);
+    }
   }
+
+  return _debounce;
 }
